@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 public class FileUploadController {
 
     private final StorageService storageService;
-
+    
     @Autowired
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
-
+    
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
 
@@ -61,7 +61,9 @@ public class FileUploadController {
 
         return "redirect:/";
     }
-
+    
+    
+    
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
