@@ -51,7 +51,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-drive</artifactId>
-      <version>v2-rev135-1.19.0</version>
+      <version>v2-rev259-1.22.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.http-client</groupId>
@@ -72,8 +72,8 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <project.http.version>1.19.0</project.http.version>
-    <project.oauth.version>1.19.0</project.oauth.version>
+        <project.http.version>1.22.0</project.http.version>
+    <project.oauth.version>1.22.0</project.oauth.version>
     </properties>
 	<issueManagement>
     <system>code.google.com</system>

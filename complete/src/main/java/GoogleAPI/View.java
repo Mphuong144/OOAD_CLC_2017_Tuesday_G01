@@ -1,4 +1,4 @@
-package hello.storage;
+package GoogleAPI;
 /*
  * Copyright (c) 2011 Google Inc.
  *

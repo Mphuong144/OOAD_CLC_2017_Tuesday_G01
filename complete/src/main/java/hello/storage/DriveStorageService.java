@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+
+import GoogleAPI.DriveService;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -36,11 +39,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
-@Service
+
 public class DriveStorageService implements StorageService{
 
 	private final Path rootLocation;
-	@Autowired
 	public DriveStorageService(StorageProperties properties) {
 		  this.rootLocation = Paths.get(properties.getLocation());
 	}

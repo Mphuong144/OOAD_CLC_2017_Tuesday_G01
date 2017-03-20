@@ -1,4 +1,4 @@
-package hello.storage;
+package GoogleAPI;
 /*
  * Copyright (c) 2012 Google Inc.
  *
@@ -16,6 +16,7 @@ package hello.storage;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -33,7 +34,9 @@ import com.google.api.services.drive.DriveScopes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * A sample application that runs multiple requests against the Drive API. The requests this sample
@@ -73,7 +76,7 @@ public class DriveService {
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
   /** Global Drive API client. */
-  private static Drive drive;
+  private static Drive service;
 
   /** Authorizes the installed application to access user's protected data. */
   private static Credential authorize() throws Exception {
@@ -104,14 +107,7 @@ public class DriveService {
 
     try {
     	java.io.File UPLOAD_FILE = new java.io.File(UPLOAD_FILE_PATH);
-      httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-      dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
-      // authorization
-      Credential credential = authorize();
-      // set up the global Drive instance
-      drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential)
-          .setApplicationName(APPLICATION_NAME).build();
-
+    service = getDriveService();
       // run commands
 
       View.header1("Starting Resumable Media Upload");
@@ -138,12 +134,36 @@ public class DriveService {
 
     FileContent mediaContent = new FileContent(ContentType, UPLOAD_FILE);
 
-    Drive.Files.Insert insert =  drive.files().insert(fileMetadata, mediaContent);
+    Drive.Files.Insert insert =  service.files().insert(fileMetadata, mediaContent);
     MediaHttpUploader uploader = insert.getMediaHttpUploader();
     uploader.setDirectUploadEnabled(useDirectUpload);
     uploader.setProgressListener(new FileUploadProgressListener());
     return insert.execute();
   }
   
-
+  public static List<File> searchFile(String name) throws Exception{
+		service =getDriveService();
+		String pageToken = "";
+		List<File> files = new ArrayList<File>();
+		do {
+			FileList result = service.files().list()
+					.setQ("title contains '"+name+"'")
+					.setSpaces("drive")			
+					.execute();
+			for(File file : result.getItems())
+				files.add(file);
+			pageToken = result.getNextPageToken();
+		} while (pageToken != null);
+		return files;
+	}
+  
+  public static Drive getDriveService() throws Exception {
+		Drive drive;
+		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+		Credential credential = authorize();
+		// // set up the global Drive instance
+		drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
+		return drive;
+	}
 }
