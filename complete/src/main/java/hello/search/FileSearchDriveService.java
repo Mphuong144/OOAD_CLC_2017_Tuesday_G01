@@ -10,8 +10,14 @@ import com.google.api.services.drive.model.File;
 import GoogleAPI.DriveService;
 @Service
 public class FileSearchDriveService implements FileSearchService{
+	
+	@Autowired
+	public FileSearchDriveService() {
+		
+	}
+
 	@Override
-	public List<File> searchFile(String name){
+	public List<String> searchFile(String name) {
 		DriveService service = new DriveService();
 		try {
 			return service.searchFile(name);
@@ -20,10 +26,6 @@ public class FileSearchDriveService implements FileSearchService{
 			e.printStackTrace();
 		}
 		return null;
-	}
-	@Autowired
-	public FileSearchDriveService() {
-		
 	}
 	
 }

@@ -141,17 +141,17 @@ public class DriveService {
     return insert.execute();
   }
   
-  public static List<File> searchFile(String name) throws Exception{
+  public static List<String> searchFile(String name) throws Exception{
 		service =getDriveService();
 		String pageToken = "";
-		List<File> files = new ArrayList<File>();
+		List<String> files = new ArrayList<String>();
 		do {
 			FileList result = service.files().list()
 					.setQ("title contains '"+name+"'")
 					.setSpaces("drive")			
 					.execute();
 			for(File file : result.getItems())
-				files.add(file);
+				files.add(file.getTitle());
 			pageToken = result.getNextPageToken();
 		} while (pageToken != null);
 		return files;
