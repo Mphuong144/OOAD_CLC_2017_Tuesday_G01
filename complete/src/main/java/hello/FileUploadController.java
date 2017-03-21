@@ -39,7 +39,7 @@ public class FileUploadController {
 //                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
 //                                .build().toString())
 //                .collect(Collectors.toList()));
-
+    	
         return "home";
     }
 
