@@ -29,18 +29,18 @@ public class FileUploadController {
         this.fileSearchService = fileSearchService;
     }
     
-    @GetMapping("/")
+    @RequestMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
 
-        model.addAttribute("files", storageService
-                .loadAll()
-                .map(path ->
-                        MvcUriComponentsBuilder
-                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-                                .build().toString())
-                .collect(Collectors.toList()));
+//        model.addAttribute("files", storageService
+//                .loadAll()
+//                .map(path ->
+//                        MvcUriComponentsBuilder
+//                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+//                                .build().toString())
+//                .collect(Collectors.toList()));
 
-        return "uploadForm";
+        return "home";
     }
 
     @GetMapping("/files/{filename:.+}")
@@ -66,7 +66,7 @@ public class FileUploadController {
     }
     
     @GetMapping("/search")
-    public String listSearchFiles(@RequestParam("fileName") String name, Model model) throws IOException {
+    public String searchFiles(@RequestParam("fileName") String name, Model model) throws IOException {
     	model.addAttribute("result",fileSearchService.searchFile(name));
         return "uploadForm";
     }
